@@ -31,7 +31,13 @@ export default function Login() {
       localStorage.setItem("accessToken", response.token)
       localStorage.setItem("userInfo", JSON.stringify(response.user))
       
-      return navigate(response.user.role == "admin" ? "/admin" : "/")
+      if (response.user.role === "admin") {
+  navigate("/admin");
+} else if (response.user.role === "psikiater") {
+  navigate("/psikiater");
+} else {
+  navigate("/");
+}
      
     } catch (error) {
       // Ketika ada error masuknya ke state
@@ -41,12 +47,21 @@ export default function Login() {
       }
     }
 
-    useEffect (() => {
-        if (token && decodedData && decodedData.success) {
-          navigate( "/admin")
-        }
-    }, [token, decodedData, navigate])
-    console.log(decodedData) 
+  useEffect(() => {
+    console.log("Decoded data:", decodedData);
+console.log("User info:", JSON.parse(localStorage.getItem("userInfo")));
+  if (token && decodedData && decodedData.user) {
+    const role = decodedData.user.role;
+
+    if (role === "admin") {
+      navigate("/admin");
+    } else if (role === "psikiater") {
+      navigate("/psikiater");
+    } else {
+      navigate("/"); // user biasa
+    }
+  }
+}, [token, decodedData, navigate]);
 
   return ( 
     <>
