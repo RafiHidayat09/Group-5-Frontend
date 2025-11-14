@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import banner from "./bannerhero.png"; 
 export default function Hero() {
   return (
@@ -20,12 +21,12 @@ export default function Hero() {
             Kesehatan mental sama pentingnya dengan kesehatan fisik. 
             Mulailah berbicara dan saling mendukung untuk hidup lebih seimbang.
           </p>
-          <a
-            href="#"
+          <Link
+            to="/quiz"
             className="inline-block px-5 py-2 bg-[#5ba8a0] hover:bg-[#4a9990] text-white rounded-full font-semibold shadow-md transition-all"
           >
-            Pelajari Lebih Lanjut
-          </a>
+            Mulai Asesment Sekarang
+          </Link>
         </div>
       </div>
     </section>

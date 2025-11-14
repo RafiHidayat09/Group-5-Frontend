@@ -4,6 +4,8 @@ import Login from "./pages/auth/login";
 import Register from "./pages/auth/register";
 import Home from "./pages/public";
 import Forums from "./pages/public/forums";
+import QuizPage from "./pages/public/QuizPage";
+import ResultPage from "./pages/public/ResultPage";
 
 function App() {
   return (
@@ -16,6 +18,8 @@ function App() {
         <Route element={<PublicLayout />}>
           <Route index element={<Home />} /> {/* path="/" */}
           <Route path="forums" element={<Forums />} />
+          <Route path="/quiz" element={<QuizPage />} />
+          <Route path="/result" element={<ResultPage />} />
         </Route>
 
         {/* =======================
@@ -23,6 +27,8 @@ function App() {
         ======================== */}
         <Route path="login" element={<Login />} />
         <Route path="register" element={<Register />} />
+
+        
 
       </Routes>
     </BrowserRouter>
