@@ -4,36 +4,35 @@ import { register } from "../../_services/auth";
 
 export default function Register() {
   const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     password: "",
-    role: "customer", // otomatis customer
   });
 
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
 
+  // Handle input
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
 
-    // validasi realtime password
     if (name === "password") {
-      if (value.length < 8) {
-        setErrors((prev) => ({ ...prev, password: "Password must be at least 8 characters" }));
-      } else {
-        setErrors((prev) => ({ ...prev, password: null }));
-      }
+      setErrors((prev) => ({
+        ...prev,
+        password: value.length < 8 ? "Password must be at least 8 characters" : null,
+      }));
     }
   };
 
+  // Handle submit
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     setErrors({});
 
-    // validasi sebelum submit
     if (formData.password.length < 8) {
       setErrors({ password: "Password must be at least 8 characters" });
       setLoading(false);
@@ -43,18 +42,31 @@ export default function Register() {
     try {
       const response = await register(formData);
 
-      // simpan token & userInfo
-      localStorage.setItem("accessToken", response.token);
-      localStorage.setItem("userInfo", JSON.stringify(response.data));
+      if (!response) throw new Error("Invalid response from server");
 
-      // redirect sesuai role
-      navigate(response.data.role === "admin" ? "/admin" : "/");
+
+      const user = response.user;
+      const token = response.token;
+
+      // Simpan token & info user
+      localStorage.setItem("accessToken", token);
+      localStorage.setItem("userInfo", JSON.stringify(user));
+
+      // Arahkan sesuai role
+      if (user.role === "admin") {
+        navigate("/admin");
+      } else if (user.role === "psikiater") {
+        navigate("/psikiater");
+      } else {
+        navigate("/");
+      }
     } catch (error) {
+      console.error("Register error:", error.response?.data || error.message);
+
       if (error?.response?.status === 422) {
-        // tangani error validasi Laravel
         setErrors(error.response.data.errors);
       } else {
-        setErrors({ submit: error?.response?.data?.message || "Registration failed" });
+        setErrors({ submit: error.response?.data?.message || "Registration failed" });
       }
     } finally {
       setLoading(false);
@@ -151,6 +163,7 @@ export default function Register() {
               {/* Submit */}
               <button
                 type="submit"
+                disabled={loading}
                 className="w-full text-white bg-indigo-600 hover:bg-indigo-700 focus:ring-4 focus:outline-none focus:ring-indigo-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-indigo-600 dark:hover:bg-indigo-700 dark:focus:ring-indigo-800"
               >
                 {loading ? "Creating account..." : "Create account"}
