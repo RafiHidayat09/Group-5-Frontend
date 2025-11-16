@@ -61,7 +61,8 @@ const RequestKonsultasi = () => {
                   <div className="flex space-x-2 ml-4">
                     <button
                       onClick={() => handleRequest(request.id, "accepted")}
-                      className="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600"
+                      className="px-4 py-2 text-white rounded-lg hover:opacity-90"
+                      style={{ backgroundColor: "#009933" }}
                     >
                       Terima
                     </button>

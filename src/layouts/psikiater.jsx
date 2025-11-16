@@ -10,13 +10,14 @@ import {
 import RequestKonsultasi from "../pages/psikiater/konsultasi";
 import KonsultasiAktif from "../pages/psikiater/aktif";
 import RiwayatPasien from "../pages/psikiater/histori";
+import { Outlet, useNavigate } from "react-router-dom";
 
 export default function Dashboard() {
   const [activeMenu, setActiveMenu] = useState("dashboard");
+  const navigate = useNavigate();
 
   const renderContent = () => {
-    switch (activeMenu) {
-      case "dashboard":
+    if (activeMenu === "dashboard") {
         return (
           <>
             <h1 className="text-3xl font-bold text-gray-800 mb-8">Dashboard</h1>
@@ -35,22 +36,8 @@ export default function Dashboard() {
             </div>
           </>
         );
-
-      case "konsultasi_request":
-        return <RequestKonsultasi />;
-
-      case "aktif":
-        return <KonsultasiAktif />; 
-
-      case "histori":
-        return <RiwayatPasien />; 
-
-      case "pengaturan":
-        return <h1 className="text-xl font-bold">Setting</h1>;
-
-      default:
-        return null;
     }
+    return null;
   };
 
   return (
@@ -68,7 +55,7 @@ export default function Dashboard() {
 
         <nav className="flex-1 space-y-2">
           <button
-            onClick={() => setActiveMenu("dashboard")}
+            onClick={() => {setActiveMenu("dashboard"); navigate("/psikiater"); }}
             className={`w-full flex items-center space-x-3 px-4 py-3 rounded-lg transition-all duration-200 ${
               activeMenu === "dashboard" 
                 ? "text-white shadow-md" 
@@ -93,7 +80,7 @@ export default function Dashboard() {
           </button>
 
           <button
-            onClick={() => setActiveMenu("konsultasi_request")}
+            onClick={() => { setActiveMenu("konsultasi_request"); navigate("/psikiater/konsultasi"); }}
             className={`w-full flex items-center space-x-3 px-4 py-3 rounded-lg transition-all duration-200 ${
               activeMenu === "konsultasi_request" 
                 ? "text-white shadow-md" 
@@ -118,7 +105,7 @@ export default function Dashboard() {
           </button>
 
           <button
-            onClick={() => setActiveMenu("aktif")}
+            onClick={() => {setActiveMenu("aktif"); navigate("/psikiater/aktif")}}
             className={`w-full flex items-center space-x-3 px-4 py-3 rounded-lg transition-all duration-200 ${
               activeMenu === "aktif" 
                 ? "text-white shadow-md" 
@@ -143,7 +130,7 @@ export default function Dashboard() {
           </button>
 
           <button
-            onClick={() => setActiveMenu("histori")}
+            onClick={() => {setActiveMenu("histori"); navigate("/psikiater/histori"); }}
             className={`w-full flex items-center space-x-3 px-4 py-3 rounded-lg transition-all duration-200 ${
               activeMenu === "histori" 
                 ? "text-white shadow-md" 
@@ -168,7 +155,7 @@ export default function Dashboard() {
           </button>
 
           <button
-            onClick={() => setActiveMenu("pengaturan")}
+            onClick={() => { setActiveMenu("pengaturan"); navigate("/psikiater/"); }}
             className={`w-full flex items-center space-x-3 px-4 py-3 rounded-lg transition-all duration-200 ${
               activeMenu === "pengaturan" 
                 ? "text-white shadow-md" 
@@ -208,7 +195,9 @@ export default function Dashboard() {
         </button>
       </div>
 
-      <div className="flex-1 p-10 overflow-y-auto">{renderContent()}</div>
+      <div className="flex-1 p-10 overflow-y-auto" style={{ backgroundColor: "#e9f4f2" }}>{renderContent()}
+        <Outlet/>
+      </div>
     </div>
   );
 }

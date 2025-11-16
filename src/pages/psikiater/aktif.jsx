@@ -39,7 +39,7 @@ export default function KonsultasiAktif() {
             }`}
           >
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-full bg-blue-500 text-white flex items-center justify-center font-semibold">
+              <div className="w-10 h-10 rounded-full text-white flex items-center justify-center font-semibold" style={{ backgroundColor: "#009933" }}>
                 {session.patient[0]}
               </div>
               <div>
@@ -50,7 +50,7 @@ export default function KonsultasiAktif() {
             <div className="flex flex-col items-end">
               <span className="text-xs text-gray-400">{session.time}</span>
               {session.unread > 0 && (
-                <span className="mt-1 w-5 h-5 text-xs bg-blue-500 text-white rounded-full flex items-center justify-center">
+                <span className="mt-1 w-5 h-5 text-xs text-white rounded-full flex items-center justify-center" style={{ backgroundColor: "#009933" }}>
                   {session.unread}
                 </span>
               )}

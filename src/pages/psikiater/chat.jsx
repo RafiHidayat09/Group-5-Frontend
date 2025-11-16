@@ -1,10 +1,12 @@
 import { useState } from "react";
 
+{/* { id: 1, sender: 'patient', text: 'Selamat pagi dokter, saya merasa sangat cemas akhir-akhir ini', time: '09:00' },
+    { id: 2, sender: 'doctor', text: 'Selamat pagi. Saya Dr. Sarah. Mari kita bicarakan keluhannya. Sejak kapan Anda merasakan kecemasan ini?', time: '09:02' },
+    { id: 3, sender: 'patient', text: 'Sudah sekitar 2 minggu, terutama saat bekerja', time: '09:03' } */}
+
 const ChatConsultation = ({ patient, onBack, onCreateNotes }) => {
   const [messages, setMessages] = useState([
-    { id: 1, sender: 'patient', text: 'Selamat pagi dokter, saya merasa sangat cemas akhir-akhir ini', time: '09:00' },
-    { id: 2, sender: 'doctor', text: 'Selamat pagi. Saya Dr. Sarah. Mari kita bicarakan keluhannya. Sejak kapan Anda merasakan kecemasan ini?', time: '09:02' },
-    { id: 3, sender: 'patient', text: 'Sudah sekitar 2 minggu, terutama saat bekerja', time: '09:03' }
+    
   ]);
   const [newMessage, setNewMessage] = useState('');
 
