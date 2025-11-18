@@ -7,6 +7,11 @@ import Forums from "./pages/public/forums";
 import QuizPage from "./pages/public/QuizPage";
 import ResultPage from "./pages/public/ResultPage";
 import ProtectedRoute from "./components/ProtectedRoute";
+import PsikiaterLayout from "./layouts/PsikiaterLayout";
+import Dashboard from "./pages/psikiater/Dashboard";
+import QuizResults from "./pages/psikiater/QuizResults";
+import UserDetail from "./pages/psikiater/UserDetail";
+import Profile from "./pages/psikiater/Profile";
 
 function App() {
   return (
@@ -46,8 +51,25 @@ function App() {
         <Route path="login" element={<Login />} />
         <Route path="register" element={<Register />} />
 
-        
+         {/* =======================
+            Psikiater Routes
+        ======================== */}
+        <Route
+          path="/psikiater"
+          element={
+            <ProtectedRoute role="psikiater">
+              <PsikiaterLayout />
+            </ProtectedRoute>
+          }
+        >
+          <Route path="dashboard" element={<Dashboard />} />
+          <Route path="results" element={<QuizResults />} />
+          <Route path="results/:id" element={<UserDetail />} />
+          <Route path="profile" element={<Profile />} />
+        </Route>
 
+
+        
       </Routes>
     </BrowserRouter>
   );
