@@ -1,9 +1,12 @@
 import { Link } from "react-router-dom";
-import banner from "./bannerhero.png"; 
+import banner from "./bannerhero.png";
+
 export default function Hero() {
+  const isLoggedIn = !!localStorage.getItem("accessToken");
+
   return (
     <section className="relative w-full bg-gray-900 overflow-hidden h-[380px] md:h-[480px]">
-      {/* Gambar banner */}
+      
       <img
         src={banner}
         alt="OverthinkIT Banner"
@@ -18,11 +21,11 @@ export default function Hero() {
             Jaga Kesehatan Mentalmu Hari Ini
           </h1>
           <p className="text-base md:text-lg mb-5 text-gray-200">
-            Kesehatan mental sama pentingnya dengan kesehatan fisik. 
-            Mulailah berbicara dan saling mendukung untuk hidup lebih seimbang.
+            Kesehatan mental sama pentingnya dengan kesehatan fisik.
           </p>
+
           <Link
-            to="/quiz"
+            to={isLoggedIn ? "/quiz" : "/login"}
             className="inline-block px-5 py-2 bg-[#5ba8a0] hover:bg-[#4a9990] text-white rounded-full font-semibold shadow-md transition-all"
           >
             Mulai Asesment Sekarang

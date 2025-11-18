@@ -11,52 +11,10 @@ export default function ResultPage() {
   const [tips, setTips] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // --- Fetch AI Tips (Tetap di top-level, AMAN) ---
-  useEffect(() => {
-    if (!scores) return; // cegah pemanggilan kalau scores kosong
+  // Untuk animasi progress-bar
+  const [animatedWidths, setAnimatedWidths] = useState({});
 
-    async function loadAI() {
-      try {
-        const result = await getMentalHealthTips(scores);
-        setTips(result.tips || []);
-      } catch (err) {
-        console.error("Gagal mengambil data asesmen:", err);
-      }
-      setLoading(false);
-    }
-
-    loadAI();
-  }, [scores]);
-
-  // --- Kondisi jika skor kosong (TIDAK ADA HOOK DI DALAMNYA) ---
-  if (!scores) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-[#1a3c3c]/20 px-4">
-        <div className="bg-white p-8 rounded-2xl shadow-lg text-center max-w-md">
-          <p className="text-[#163737] font-medium mb-4">
-            Belum ada data asesmen.
-            <br />
-            Silakan mulai quiz terlebih dahulu.
-          </p>
-
-          <button
-            onClick={() => navigate("/quiz")}
-            className="px-6 py-2 bg-[#1e4d4d] text-white rounded-full shadow-md hover:bg-[#163f3f] transition-all flex items-center gap-2"
-          >
-            <i className="fas fa-redo"></i>
-            Mulai Quiz
-          </button>
-        </div>
-      </div>
-    );
-  }
-
-  // --- Konversi skor tetap di bawah kondisi, ini aman ---
-  const scoreArray = Object.entries(scores).map(([category, value]) => ({
-    category,
-    value,
-  }));
-
+  // ICON SETUP
   const getCategoryIconClass = (category) => {
     switch (category.toLowerCase()) {
       case "stress":
@@ -65,10 +23,101 @@ export default function ResultPage() {
         return "fas fa-face-frown";
       case "depresi":
         return "fas fa-heart-pulse";
+      case "burnout":
+        return "fas fa-fire";
+      case "kualitas tidur":
+        return "fas fa-moon";
       default:
         return "fas fa-leaf";
     }
   };
+
+  // WARNA ICON + PROGRESS
+  const getCategoryColor = (category) => {
+    switch (category.toLowerCase()) {
+      case "stress":
+        return "#e63946";
+      case "kecemasan":
+        return "#ff9f1c";
+      case "depresi":
+        return "#457b9d";
+      case "burnout":
+        return "#d00000";
+      case "kualitas tidur":
+        return "#7209b7";
+      default:
+        return "#1e4d4d";
+    }
+  };
+
+  // --- LOAD AI TIPS ---
+  useEffect(() => {
+    if (!scores) return;
+
+    async function loadAI() {
+      try {
+        const result = await getMentalHealthTips(scores);
+        setTips(result.tips || []);
+      } catch (err) {
+        console.error("Gagal mengambil tips AI:", err);
+      }
+      setLoading(false);
+    }
+
+    loadAI();
+  }, [scores]);
+
+  // --- ANIMASI PROGRESS BAR ---
+  useEffect(() => {
+    if (!scores) return;
+
+    // Hitung target width
+    const targetWidths = {};
+    Object.entries(scores).forEach(([cat, value]) => {
+      targetWidths[cat] = (value / 5) * 100;
+    });
+
+    // Gunakan requestAnimationFrame agar tidak dianggap synchronous update
+    requestAnimationFrame(() => {
+      // Set awal 0%
+      setAnimatedWidths(
+        Object.fromEntries(Object.keys(targetWidths).map((cat) => [cat, 0]))
+      );
+
+      // Delay sedikit agar transisi terlihat
+      setTimeout(() => {
+        requestAnimationFrame(() => {
+          setAnimatedWidths(targetWidths);
+        });
+      }, 150);
+    });
+  }, [scores]);
+
+  // Jika tidak ada skor (langsung akses halaman)
+  if (!scores) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-[#1a3c3c]/20 px-4">
+        <div className="bg-white p-8 rounded-2xl shadow-lg text-center max-w-md">
+          <p className="text-[#163737] font-medium mb-4">
+            Belum ada data asesmen.<br />Silakan mulai quiz terlebih dahulu.
+          </p>
+
+          <button
+            onClick={() => navigate("/quiz")}
+            className="px-6 py-2 bg-[#1e4d4d] text-white rounded-full shadow-md hover:bg-[#163f3f] transition-all"
+          >
+            Mulai Quiz
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  // Konversi ke array supaya mudah dirender
+  const scoreArray = Object.entries(scores).map(([category, value]) => ({
+    category,
+    value,
+  }));
 
   return (
     <div className="min-h-screen bg-[#1a3c3c]/20 flex items-center justify-center px-4 py-10">
@@ -81,45 +130,52 @@ export default function ResultPage() {
           Berikut adalah rekap penilaian berdasarkan jawabanmu.
         </p>
 
-        {/* Score Cards */}
+        {/* SCORE CARDS */}
         <div className="space-y-5">
-          {scoreArray.map((item, index) => (
-            <div
-              key={index}
-              className="bg-[#e9f4f2] px-6 py-4 rounded-xl border border-[#1e4d4d]/20 shadow-inner flex items-center gap-4"
-            >
-              <i
-                className={`${getCategoryIconClass(
-                  item.category
-                )} text-[#1e4d4d] text-2xl`}
-              ></i>
+          {scoreArray.map((item, index) => {
+            const color = getCategoryColor(item.category);
 
-              <div className="flex-1">
-                <h2 className="text-lg font-semibold text-[#163737]">
-                  {item.category}
-                </h2>
+            return (
+              <div
+                key={index}
+                className="bg-[#e9f4f2] px-6 py-4 rounded-xl border border-[#1e4d4d]/20 shadow-inner flex items-center gap-4"
+              >
+                <i
+                  className={`${getCategoryIconClass(
+                    item.category
+                  )} text-2xl`}
+                  style={{ color }}
+                ></i>
 
-                <div className="w-full bg-gray-200 rounded-full h-3 mt-2">
-                  <div
-                    className="h-3 rounded-full transition-all duration-300"
-                    style={{
-                      width: `${item.value * 10}%`,
-                      backgroundColor: "#1e4d4d",
-                    }}
-                  ></div>
+                <div className="flex-1">
+                  <h2 className="text-lg font-semibold text-[#163737]">
+                    {item.category}
+                  </h2>
+
+                  {/* ANIMATED BAR */}
+                  <div className="w-full bg-gray-200 rounded-full h-3 mt-2 overflow-hidden">
+                    <div
+                      className="h-3 rounded-full"
+                      style={{
+                        width: `${animatedWidths[item.category] || 0}%`,
+                        backgroundColor: color,
+                        transition: "width 1.2s ease",
+                      }}
+                    ></div>
+                  </div>
+
+                  <p className="text-gray-700 mt-2">
+                    Skor: <span className="font-semibold">{item.value}</span>
+                  </p>
                 </div>
-
-                <p className="text-gray-700 mt-2">
-                  Skor: <span className="font-semibold">{item.value}</span>
-                </p>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
 
-        {/* AI Tips */}
+        {/* AI TIPS */}
         <h2 className="text-2xl font-bold text-[#163737] mt-12 mb-4">
-          Rekomendasi 
+          Rekomendasi
         </h2>
 
         <div className="bg-[#eef7f6] border border-[#1e4d4d]/20 p-6 rounded-xl shadow-inner">
@@ -136,7 +192,7 @@ export default function ResultPage() {
           )}
         </div>
 
-        {/* Buttons */}
+        {/* BUTTONS */}
         <div className="mt-10 flex justify-center gap-4">
           <button
             onClick={() => navigate("/quiz")}

@@ -32,12 +32,12 @@ export default function Login() {
       localStorage.setItem("userInfo", JSON.stringify(response.user))
       
       if (response.user.role === "admin") {
-  navigate("/admin");
-} else if (response.user.role === "psikiater") {
-  navigate("/psikiater");
-} else {
-  navigate("/");
-}
+          navigate("/admin");
+        } else if (response.user.role === "psikiater") {
+          navigate("/psikiater");
+        } else {
+          navigate("/");
+        }
      
     } catch (error) {
       // Ketika ada error masuknya ke state
