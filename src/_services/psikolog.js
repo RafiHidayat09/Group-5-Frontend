@@ -1,0 +1,13 @@
+// src/_services/psikolog.js
+import { API } from "../_api"; // axios instance yang sudah ada
+
+export const getPsikologProfile = async () => {
+  const token = localStorage.getItem("accessToken");
+  const res = await API.get("/psikolog-profile", {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      Accept: "application/json",
+    },
+  });
+  return res.data;
+};

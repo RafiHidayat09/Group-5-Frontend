@@ -7,5 +7,7 @@ export const API  = axios.create({
   baseURL: `${url}/api`, // Tulis API (local)yang telah dibangun
 })
 
+export const psikologImageStorage = `${url}/storage/psikolog`; // path folder storage psikolog
+
 
 
