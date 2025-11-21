@@ -1,4 +1,4 @@
-/* inactive overscroll */
+/* inactivation overscroll */
 html, body {
   overscroll-behavior: none;
   overflow-x: hidden;
