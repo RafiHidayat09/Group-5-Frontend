@@ -4,7 +4,7 @@ import { API } from "../_api";
 export const getArticles = async () => {
   try {
     const { data } = await API.get("/articles");
-    return data.data; // mengikuti struktur backend kamu
+    return data.data; 
   } catch (error) {
     console.log(error);
     throw error;

@@ -1,5 +1,5 @@
 // src/_services/psikolog.js
-import { API } from "../_api"; // axios instance yang sudah ada
+import { API } from "../_api"; 
 
 export const getPsikologProfile = async () => {
   const token = localStorage.getItem("accessToken");
