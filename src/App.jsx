@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import PublicLayout from "./layouts/public";
 import Login from "./pages/auth/login";
 import Register from "./pages/auth/register";
@@ -79,6 +79,7 @@ function App() {
             </ProtectedRoute>
           }
         >
+          <Route index element={<Navigate to="dashboard" replace />} />
           <Route path="dashboard" element={<Dashboard />} />
           <Route path="results" element={<QuizResults />} />
           <Route path="results/:id" element={<UserDetail />} />
