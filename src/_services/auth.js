@@ -82,5 +82,72 @@ export const useDecodeToken = (token) => {
   }
 }
 
+export const redirectToGoogleAuth = () => {
+  const backendGoogleUrl = "http://127.0.0.1:8000/auth/google";
+
+  console.log('➡️ Redirecting to Laravel Backend:', backendGoogleUrl);
+  
+  window.location.href = backendGoogleUrl;
+};
+
+export const handleGoogleCallback = () => {
+  try {
+    const urlParams = new URLSearchParams(window.location.search);
+    
+    // Ambil data dari URL (dikirim oleh Laravel)
+    const token = urlParams.get('token');
+    const userParam = urlParams.get('user'); // Ini masih dalam bentuk Base64 string
+    const error = urlParams.get('error');
+    
+    console.log('🔍 Reading URL Params from Laravel:', { 
+      token: token ? '✓ Present' : '✗ Missing', 
+      userParam: userParam ? '✓ Present' : '✗ Missing',
+      error
+    });
+
+    // Cek Error dari Backend
+    if (error) {
+       return {
+        success: false,
+        error: decodeURIComponent(error)
+      };
+    }
+    
+    // Cek jika Token dan User ada
+    if (token && userParam) {
+      let userData;
+      
+      try {
+        userData = JSON.parse(atob(userParam));
+      } catch (e) {
+        console.error('❌ Failed to decode user data', e);
+        return { success: false, error: 'Invalid user data format' };
+      }
+      
+      localStorage.setItem("accessToken", token); 
+      localStorage.setItem("userInfo", JSON.stringify(userData));
+      
+      console.log('✅ Google login processed successfully:', userData);
+      
+      return {
+        success: true,
+        token,
+        user: userData
+      };
+    } else {
+      console.log('❌ Missing token or user data in URL');
+      return {
+        success: false,
+        error: 'Authentication failed: No token received.'
+      };
+    }
+  } catch (error) {
+    console.error('💥 Error in handleGoogleCallback:', error);
+    return {
+      success: false,
+      error: 'Failed to process Google login: ' + error.message
+    };
+  }
+};
 
 

@@ -1,13 +1,21 @@
-// src/_services/psikolog.js
-import { API } from "../_api"; 
+import { API } from '../_api';
 
-export const getPsikologProfile = async () => {
-  const token = localStorage.getItem("accessToken");
-  const res = await API.get("/psikolog-profile", {
-    headers: {
-      Authorization: `Bearer ${token}`,
-      Accept: "application/json",
-    },
-  });
-  return res.data;
-};
+export const getPsychologists = async () => {
+  try {
+    const { data } = await API.get('/psychologists');
+    return data;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+}
+
+export const getPsychologist = async (id) => {
+  try {
+    const { data } = await API.get(`/psychologists/${id}`);
+    return data;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+}
