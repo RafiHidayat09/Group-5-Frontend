@@ -48,6 +48,19 @@ export default function AdminLayout() {
 
            
           </nav>
+           <nav className="flex flex-col gap-4 text-lg">
+
+            
+
+            <Link
+              to="/admin/user"
+              className="hover:bg-[#255e5e] py-2 px-3 rounded transition"
+            >
+              List User
+            </Link>
+
+           
+          </nav>
         </div>
 
         {/* LOGOUT BUTTON */}

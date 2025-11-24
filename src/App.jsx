@@ -23,6 +23,7 @@ import CreatePsikiater from "./pages/admin/psikiater/create";
 import EditPsikiater from "./pages/admin/psikiater/edit";
 import LayananPsikiater from "./pages/public/layanan";
 import ShowPsikiater from "./pages/public/layanan/show";
+import UserIndex from "./pages/admin/user";
 
 function App() {
   return (
@@ -88,6 +89,7 @@ function App() {
           <Route path="artikel" element={<PsikiaterArticles />} />
           <Route path="articles/create" element={<CreateArticles />} />
           <Route path="articles/edit/:id" element={<EditArticles />} />
+          
         </Route>
 
          <Route path="admin" element={<AdminLayout />}>
@@ -95,6 +97,7 @@ function App() {
             <Route path="psikiater" element={<PsikiaterIndex />} />
             <Route path="psikiater/create" element={<CreatePsikiater />} />
             <Route path="psikiater/edit/:id" element={<EditPsikiater />} />
+            <Route path="user" element={<UserIndex />} />
 
          </Route>
       </Routes>
