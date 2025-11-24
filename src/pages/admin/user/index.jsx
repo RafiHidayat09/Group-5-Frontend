@@ -18,17 +18,6 @@ export default function UserIndex() {
     }
   };
 
-  const handleDelete = async (id) => {
-    if (!confirm("Yakin ingin menghapus user ini?")) return;
-
-    try {
-      await API.delete(`/users/${id}`);
-      loadData();
-    } catch (err) {
-      console.error("Gagal hapus user:", err);
-    }
-  };
-
   useEffect(() => {
     loadData();
   }, []);
@@ -41,9 +30,9 @@ export default function UserIndex() {
   return (
     <section className="bg-gray-100 py-12 min-h-screen">
       <div className="max-w-screen-xl mx-auto px-6">
-        
+
         <h1 className="text-3xl font-bold text-[#163737] mb-8">
-          Manajemen User
+          Daftar User
         </h1>
 
         {/* Search */}
@@ -64,14 +53,13 @@ export default function UserIndex() {
                 <th className="px-4 py-3 text-left font-semibold">Email</th>
                 <th className="px-4 py-3 text-left font-semibold">Role</th>
                 <th className="px-4 py-3 text-left font-semibold">Bergabung</th>
-                <th className="px-4 py-3 text-center font-semibold">Aksi</th>
               </tr>
             </thead>
 
             <tbody className="divide-y divide-gray-200">
               {loading ? (
                 <tr>
-                  <td colSpan="6" className="text-center py-6">Memuat...</td>
+                  <td colSpan="4" className="text-center py-6">Memuat...</td>
                 </tr>
               ) : filtered.length > 0 ? (
                 filtered.map((user) => (
@@ -86,19 +74,11 @@ export default function UserIndex() {
                     <td className="px-4 py-3">
                       {new Date(user.created_at).toLocaleDateString("id-ID")}
                     </td>
-                    <td className="px-4 py-3 text-center">
-                      <button
-                        onClick={() => handleDelete(user.id)}
-                        className="text-red-600 hover:underline"
-                      >
-                        Hapus
-                      </button>
-                    </td>
                   </tr>
                 ))
               ) : (
                 <tr>
-                  <td colSpan="6" className="text-center py-6">
+                  <td colSpan="4" className="text-center py-6">
                     Tidak ada user ditemukan.
                   </td>
                 </tr>
