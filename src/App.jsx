@@ -16,6 +16,11 @@ import ShowArticle from "./pages/public/articles/show";
 import PsikiaterArticles from "./pages/psikiater/articles";
 import CreateArticles from "./pages/psikiater/articles/create";
 import EditArticles from "./pages/psikiater/articles/edit";
+import AdminLayout from "./layouts/admin";
+import AdminDashboard from "./pages/admin";
+import PsikiaterIndex from "./pages/admin/psikiater";
+import CreatePsikiater from "./pages/admin/psikiater/create";
+import EditPsikiater from "./pages/admin/psikiater/edit";
 
 function App() {
   return (
@@ -79,6 +84,14 @@ function App() {
           <Route path="articles/create" element={<CreateArticles />} />
           <Route path="articles/edit/:id" element={<EditArticles />} />
         </Route>
+
+         <Route path="admin" element={<AdminLayout />}>
+            <Route index element={<AdminDashboard />} />
+            <Route path="psikiater" element={<PsikiaterIndex />} />
+            <Route path="psikiater/create" element={<CreatePsikiater />} />
+            <Route path="psikiater/edit/:id" element={<EditPsikiater />} />
+
+         </Route>
       </Routes>
     </BrowserRouter>
   );
