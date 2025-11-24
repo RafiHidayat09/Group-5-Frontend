@@ -21,6 +21,8 @@ import AdminDashboard from "./pages/admin";
 import PsikiaterIndex from "./pages/admin/psikiater";
 import CreatePsikiater from "./pages/admin/psikiater/create";
 import EditPsikiater from "./pages/admin/psikiater/edit";
+import LayananPsikiater from "./pages/public/layanan";
+import ShowPsikiater from "./pages/public/layanan/show";
 
 function App() {
   return (
@@ -35,6 +37,9 @@ function App() {
               {/* Publik artikel */}
           <Route path="artikel" element={<Articles />} />
           <Route path="articles/show/:id" element={<ShowArticle />} />
+            <Route path="layanan" element={<LayananPsikiater />} />
+          <Route path="layanan/show/:id" element={<ShowPsikiater />} />
+          
 
           {/* 🔒 hanya user login */}
           <Route

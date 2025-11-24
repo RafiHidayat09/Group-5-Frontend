@@ -130,7 +130,7 @@ export default function Navbar() {
 
               <li>
                 <NavLink
-                  to="/services"
+                  to="/layanan"
                   className={({ isActive }) =>
                     `block py-2 pr-4 pl-3 transition-all ${
                       isActive
