@@ -84,6 +84,7 @@ function App() {
             </ProtectedRoute>
           }
         >
+          <Route index element={<Navigate to="dashboard" replace />} />
           <Route path="dashboard" element={<Dashboard />} />
           <Route path="results" element={<QuizResults />} />
           <Route path="results/:id" element={<UserDetail />} />
