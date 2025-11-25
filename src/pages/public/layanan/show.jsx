@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { showPsikiater } from "../../../_services/psikiater";
 import { psikologImageStorage } from "../../../_api";
 
 export default function ShowPsikiater() {
   const { id } = useParams();
+  const navigate = useNavigate();
   const [psikiater, setPsikiater] = useState(null);
 
   useEffect(() => {
@@ -26,7 +27,13 @@ export default function ShowPsikiater() {
       <div className="max-w-3xl mx-auto px-6">
 
         <div className="bg-white shadow-lg rounded-2xl p-10 border border-gray-200">
-
+          <button
+            onClick={() => navigate("/layanan")}
+            className="flex items-center text-[#1e4d4d] hover:text-[#163737] mb-4 group"
+          >
+          <i className="fa-solid fa-arrow-left mr-2 group-hover:-translate-x-1 transition-all"></i>
+            Kembali
+          </button> 
           {/* FOTO + NAMA + SPESIALISASI */}
           <div className="flex flex-col items-center text-center">
 
