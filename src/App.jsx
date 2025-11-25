@@ -13,9 +13,9 @@ import Profile from "./pages/psikiater/Profile";
 import QuizPage from "./pages/public/QuizPage";
 import Articles from "./pages/public/articles";
 import ShowArticle from "./pages/public/articles/show";
-import PsikiaterArticles from "./pages/psikiater/articles";
-import CreateArticles from "./pages/psikiater/articles/create";
-import EditArticles from "./pages/psikiater/articles/edit";
+import PsikiaterArticles from "./pages/psikiater/artikel";
+import CreateArticles from "./pages/psikiater/artikel/create";
+import EditArticles from "./pages/psikiater/artikel/edit";
 import AdminLayout from "./layouts/admin";
 import AdminDashboard from "./pages/admin";
 import PsikiaterIndex from "./pages/admin/psikiater";
@@ -84,7 +84,7 @@ function App() {
             </ProtectedRoute>
           }
         >
-          <Route index element={<Navigate to="dashboard" replace />} />
+          {/* <Route index element={<Navigate to="dashboard" replace />} /> */}
           <Route path="dashboard" element={<Dashboard />} />
           <Route path="results" element={<QuizResults />} />
           <Route path="results/:id" element={<UserDetail />} />
@@ -92,8 +92,8 @@ function App() {
 
           {/* CRUD ARTIKEL PSIKIATER */}
           <Route path="artikel" element={<PsikiaterArticles />} />
-          <Route path="articles/create" element={<CreateArticles />} />
-          <Route path="articles/edit/:id" element={<EditArticles />} />
+          <Route path="artikel/create" element={<CreateArticles />} />
+          <Route path="artikel/edit/:id" element={<EditArticles />} />
           
         </Route>
 
