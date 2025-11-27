@@ -14,7 +14,7 @@ export default function ResultPage() {
   // Untuk animasi progress-bar
   const [animatedWidths, setAnimatedWidths] = useState({});
 
-  // ICON SETUP
+  // ICON SETUP - Menggabungkan semua kategori dari kedua versi
   const getCategoryIconClass = (category) => {
     switch (category.toLowerCase()) {
       case "stress":
@@ -32,7 +32,7 @@ export default function ResultPage() {
     }
   };
 
-  // WARNA ICON + PROGRESS
+  // WARNA ICON + PROGRESS - Warna berbeda untuk setiap kategori
   const getCategoryColor = (category) => {
     switch (category.toLowerCase()) {
       case "stress":
@@ -71,10 +71,12 @@ export default function ResultPage() {
   useEffect(() => {
     if (!scores) return;
 
-    // Hitung target width
+    // Hitung target width (mendukung skala 0-5 atau 0-3)
     const targetWidths = {};
     Object.entries(scores).forEach(([cat, value]) => {
-      targetWidths[cat] = (value / 5) * 100;
+      // Normalisasi ke persentase (asumsi skor maksimal 5)
+      const maxScore = 5;
+      targetWidths[cat] = (value / maxScore) * 100;
     });
 
     // Gunakan requestAnimationFrame agar tidak dianggap synchronous update
@@ -104,8 +106,9 @@ export default function ResultPage() {
 
           <button
             onClick={() => navigate("/quiz")}
-            className="px-6 py-2 bg-[#1e4d4d] text-white rounded-full shadow-md hover:bg-[#163f3f] transition-all"
+            className="px-6 py-2 bg-[#1e4d4d] text-white rounded-full shadow-md hover:bg-[#163f3f] transition-all flex items-center gap-2"
           >
+            <i className="fas fa-redo"></i>
             Mulai Quiz
           </button>
         </div>
@@ -130,7 +133,7 @@ export default function ResultPage() {
           Berikut adalah rekap penilaian berdasarkan jawabanmu.
         </p>
 
-        {/* SCORE CARDS */}
+        {/* SCORE CARDS DENGAN ANIMASI */}
         <div className="space-y-5">
           {scoreArray.map((item, index) => {
             const color = getCategoryColor(item.category);
@@ -141,9 +144,7 @@ export default function ResultPage() {
                 className="bg-[#e9f4f2] px-6 py-4 rounded-xl border border-[#1e4d4d]/20 shadow-inner flex items-center gap-4"
               >
                 <i
-                  className={`${getCategoryIconClass(
-                    item.category
-                  )} text-2xl`}
+                  className={`${getCategoryIconClass(item.category)} text-2xl`}
                   style={{ color }}
                 ></i>
 
@@ -152,7 +153,7 @@ export default function ResultPage() {
                     {item.category}
                   </h2>
 
-                  {/* ANIMATED BAR */}
+                  {/* ANIMATED PROGRESS BAR */}
                   <div className="w-full bg-gray-200 rounded-full h-3 mt-2 overflow-hidden">
                     <div
                       className="h-3 rounded-full"

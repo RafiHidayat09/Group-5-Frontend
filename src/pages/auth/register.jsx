@@ -50,10 +50,17 @@ export default function Register() {
       localStorage.setItem("accessToken", token);
       localStorage.setItem("userInfo", JSON.stringify(user));
 
-      if (user.role === "admin") navigate("/admin");
-      else if (user.role === "psikiater") navigate("/psikiater");
-      else navigate("/");
+      // Support both role systems
+      if (user.role === "admin") {
+        navigate("/admin");
+      } else if (user.role === "psychologist" || user.role === "psikiater") {
+        navigate("/psychologist");
+      } else {
+        navigate("/");
+      }
     } catch (error) {
+      console.error("Register error:", error.response?.data || error.message);
+
       if (error?.response?.status === 422) {
         setErrors(error.response.data.errors);
       } else {
@@ -66,7 +73,7 @@ export default function Register() {
 
   return (
     <>
-      {/*  REGISTER FORM  */}
+      {/* REGISTER FORM */}
       <section className="bg-[#1a3c3c]/20 py-16 min-h-screen flex items-center">
         <div className="max-w-screen-xl mx-auto px-6 w-full flex justify-center">
           <div className="bg-white rounded-2xl shadow-md border border-[#1e4d4d]/20 p-8 w-full sm:max-w-md">
@@ -76,7 +83,7 @@ export default function Register() {
               onClick={() => navigate("/")}
               className="flex items-center text-[#1e4d4d] hover:text-[#163737] mb-4 group"
             >
-            <i className="fa-solid fa-arrow-left mr-2 group-hover:-translate-x-1 transition-all"></i>
+              <i className="fa-solid fa-arrow-left mr-2 group-hover:-translate-x-1 transition-all"></i>
               Kembali ke Beranda
             </button>
 
@@ -85,7 +92,7 @@ export default function Register() {
             </h1>
 
             {errors.submit && (
-              <div className="text-red-500 text-sm mb-4 text-center">
+              <div className="text-red-600 bg-red-100 border border-red-300 px-4 py-2 rounded-lg text-sm mb-4 text-center">
                 {errors.submit}
               </div>
             )}
@@ -103,7 +110,7 @@ export default function Register() {
                   value={formData.name}
                   onChange={handleChange}
                   placeholder="John Doe"
-                  className="w-full p-3 border border-[#1e4d4d]/30 rounded-lg focus:ring-2 focus:ring-[#1e4d4d] focus:border-[#1e4d4d] text-[#163737]"
+                  className="w-full p-3 border border-[#1e4d4d]/30 rounded-lg focus:ring-2 focus:ring-[#1e4d4d] focus:border-[#1e4d4d] text-[#163737] bg-white transition-all"
                   required
                 />
                 {errors.name && (
@@ -122,7 +129,7 @@ export default function Register() {
                   value={formData.email}
                   onChange={handleChange}
                   placeholder="name@company.com"
-                  className="w-full p-3 border border-[#1e4d4d]/30 rounded-lg focus:ring-2 focus:ring-[#1e4d4d] focus:border-[#1e4d4d] text-[#163737]"
+                  className="w-full p-3 border border-[#1e4d4d]/30 rounded-lg focus:ring-2 focus:ring-[#1e4d4d] focus:border-[#1e4d4d] text-[#163737] bg-white transition-all"
                   required
                 />
                 {errors.email && (
@@ -141,8 +148,9 @@ export default function Register() {
                   value={formData.password}
                   onChange={handleChange}
                   placeholder="••••••••"
-                  className="w-full p-3 border border-[#1e4d4d]/30 rounded-lg focus:ring-2 focus:ring-[#1e4d4d] focus:border-[#1e4d4d] text-[#163737]"
+                  className="w-full p-3 border border-[#1e4d4d]/30 rounded-lg focus:ring-2 focus:ring-[#1e4d4d] focus:border-[#1e4d4d] text-[#163737] bg-white transition-all"
                   required
+                  minLength={8}
                 />
                 {errors.password && (
                   <p className="text-red-500 text-sm mt-1">{errors.password}</p>
@@ -151,15 +159,17 @@ export default function Register() {
 
               {/* Terms */}
               <div className="flex items-start">
-                <input
-                  type="checkbox"
-                  required
-                  className="w-4 h-4 border border-[#1e4d4d]/50 rounded focus:ring-[#1e4d4d] text-[#1e4d4d]"
-                />
+                <div className="flex items-center h-5">
+                  <input
+                    type="checkbox"
+                    required
+                    className="w-4 h-4 border border-[#1e4d4d]/50 rounded focus:ring-[#1e4d4d] text-[#1e4d4d] bg-white"
+                  />
+                </div>
                 <label className="ml-2 text-[#163737] text-sm">
                   I agree to the{" "}
                   <span
-                    className="underline cursor-pointer text-[#1e4d4d] hover:text-[#163737]"
+                    className="underline cursor-pointer text-[#1e4d4d] hover:text-[#163737] font-medium"
                     onClick={() => setShowTerms(true)}
                   >
                     Terms & Conditions
@@ -171,7 +181,7 @@ export default function Register() {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full bg-[#1e4d4d] hover:bg-[#163737] text-white font-medium py-3 rounded-lg transition-all duration-300 shadow-sm hover:shadow-md"
+                className="w-full bg-[#1e4d4d] hover:bg-[#163737] text-white font-medium py-3 rounded-lg transition-all duration-300 shadow-sm hover:shadow-md disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {loading ? "Creating account..." : "Create Account"}
               </button>
@@ -191,29 +201,45 @@ export default function Register() {
         </div>
       </section>
 
-      {/*  POPUP TERMS & CONDITIONS  */}
+      {/* POPUP TERMS & CONDITIONS */}
       {showTerms && (
-        <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
-          <div className="bg-white w-full max-w-md p-6 rounded-2xl shadow-xl border border-[#1e4d4d]/20">
+        <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50 p-4">
+          <div className="bg-white w-full max-w-md p-6 rounded-2xl shadow-xl border border-[#1e4d4d]/20 max-h-[80vh] overflow-y-auto">
             
             <h2 className="text-xl font-bold text-[#163737] mb-4">
               Terms & Conditions
             </h2>
 
-            <p className="text-gray-600 text-sm leading-relaxed mb-4">
-              Dengan menggunakan layanan ini, Anda menyetujui bahwa data Anda
-              akan diproses secara aman, tidak dibagikan kepada pihak ketiga,
-              dan hanya digunakan untuk keperluan peningkatan layanan.
-            </p>
+            <div className="space-y-3 text-sm text-gray-600 leading-relaxed">
+              <p>
+                Dengan menggunakan layanan OverthinkIT, Anda menyetujui bahwa data pribadi Anda 
+                akan diproses secara aman dan bertanggung jawab sesuai dengan kebijakan privasi kami.
+              </p>
+              
+              <p>
+                Data yang dikumpulkan hanya akan digunakan untuk keperluan peningkatan layanan, 
+                personalisasi pengalaman pengguna, dan komunikasi terkait layanan.
+              </p>
 
-            <p className="text-gray-600 text-sm leading-relaxed mb-4">
-              Pastikan Anda membaca seluruh ketentuan dengan baik. Jika Anda
-              tidak setuju, Anda dapat membatalkan proses pendaftaran.
-            </p>
+              <p>
+                Kami tidak akan membagikan informasi pribadi Anda kepada pihak ketiga tanpa 
+                persetujuan Anda, kecuali jika diwajibkan oleh hukum.
+              </p>
+
+              <p>
+                Anda bertanggung jawab untuk menjaga kerahasiaan akun dan password Anda. 
+                Segala aktivitas yang terjadi under akun Anda menjadi tanggung jawab Anda.
+              </p>
+
+              <p>
+                Layanan ini ditujukan untuk memberikan dukungan kesehatan mental awal dan 
+                tidak menggantikan konsultasi dengan profesional kesehatan mental yang qualified.
+              </p>
+            </div>
 
             <button
               onClick={() => setShowTerms(false)}
-              className="w-full py-2 mt-2 bg-[#1e4d4d] text-white rounded-lg hover:bg-[#163737] transition"
+              className="w-full py-3 mt-6 bg-[#1e4d4d] text-white rounded-lg hover:bg-[#163737] transition-all font-medium"
             >
               Saya Mengerti
             </button>

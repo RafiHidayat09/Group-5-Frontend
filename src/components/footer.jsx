@@ -14,7 +14,7 @@ export default function Footer() {
             <Link to="/about" className="hover:text-[#7eb8b0] transition">About</Link>
           </li>
           <li>
-            <Link to="/services" className="hover:text-[#7eb8b0] transition">Layanan</Link>
+            <Link to="/konsultasi" className="hover:text-[#7eb8b0] transition">Konsultasi</Link>
           </li>
           <li>
             <Link to="/artikel" className="hover:text-[#7eb8b0] transition">Artikel</Link>

@@ -12,7 +12,7 @@ export default function Results({ scores, onRestart }) {
       setTips(result.tips || []);
     }
     loadTips();
-  }, []);
+  }, [scores]); // Added scores dependency
 
   return (
     <div style={{ padding: 20 }}>
@@ -26,7 +26,7 @@ export default function Results({ scores, onRestart }) {
         ))}
       </ul>
 
-      <h3>Saran</h3>
+      <h3>Saran dari AI</h3>
       <ul>
         {tips.map((t, i) => (
           <li key={i}>{t}</li>
