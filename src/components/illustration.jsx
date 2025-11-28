@@ -31,7 +31,7 @@ export default function Illustration() {
               </div>
             </div>
             
-            <Link to="/register">
+            <Link to="/login">
               <button className="bg-[#1e4d4d] hover:bg-[#163737] text-white font-medium px-8 py-3 rounded-lg transition-all duration-300 transform hover:scale-105 shadow-lg">
                 Mulai Perjalanan Anda
               </button>

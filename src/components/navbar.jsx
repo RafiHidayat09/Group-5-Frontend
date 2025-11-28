@@ -288,24 +288,7 @@ export default function Navbar() {
                   About Us
                 </NavLink>
               </li>
-
-              {/* Menu dari kode teman */}
-              <li>
-                <NavLink
-                  to="/layanan"
-                  onClick={closeMenu}
-                  className={({ isActive }) =>
-                    `block py-3 px-4 rounded transition-all border-b border-gray-600 ${
-                      isActive
-                        ? "text-white bg-[#5ba8a0]"
-                        : "text-gray-200 hover:bg-white/10"
-                    }`
-                  }
-                >
-                  Layanan
-                </NavLink>
-              </li>
-
+              
               <li>
                 <NavLink
                   to="/artikel"
