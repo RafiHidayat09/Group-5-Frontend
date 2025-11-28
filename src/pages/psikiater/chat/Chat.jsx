@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { API } from "../../../_api";
 
 export default function ChatPsikiater() {
-  // Ambil info psikiater dari localStorage
   const user = JSON.parse(localStorage.getItem("userInfo"));
   const psikiaterId = user?.id;
 
@@ -12,41 +11,52 @@ export default function ChatPsikiater() {
   const [reply, setReply] = useState("");
 
   // =====================
-  // Load daftar user
+  // Load daftar user saat mount
   // =====================
   useEffect(() => {
+    let isMounted = true;
+
     const loadUserList = async () => {
       try {
         const res = await API.get("/chat/psikiater-users");
-        setUserList(res.data.data || []);
+        if (isMounted) setUserList(res.data.data || []);
       } catch (err) {
         console.error("Gagal memuat daftar user:", err);
       }
     };
+
     loadUserList();
+
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
   // =====================
-  // Load chat dengan user yang dipilih
+  // Load chat dengan user yang dipilih dan auto-refresh
   // =====================
   useEffect(() => {
     if (!selectedUser) return;
 
+    let isMounted = true;
+
     const loadChat = async () => {
       try {
-        const res = await API.get(`/chat/room/${psikiaterId}/${selectedUser}`);
-        setMessages(res.data.data || []);
+        const res = await API.get(`/chat/${selectedUser}`);
+        if (isMounted) setMessages(res.data.data || []);
       } catch (err) {
         console.error("Gagal memuat chat:", err);
       }
     };
 
-    // Load pertama kali
-    loadChat();
-    // Auto-refresh setiap 3 detik
-    const interval = setInterval(loadChat, 3000);
-    return () => clearInterval(interval);
-  }, [selectedUser, psikiaterId]);
+    loadChat(); // langsung load saat pilih user
+    const interval = setInterval(loadChat, 3000); // auto-refresh
+
+    return () => {
+      isMounted = false;
+      clearInterval(interval);
+    };
+  }, [selectedUser]);
 
   // =====================
   // Kirim balasan
@@ -61,10 +71,10 @@ export default function ChatPsikiater() {
         receiver_id: selectedUser,
         message: reply,
       });
-
       setReply("");
+
       // Refresh chat setelah kirim
-      const res = await API.get(`/chat/room/${psikiaterId}/${selectedUser}`);
+      const res = await API.get(`/chat/${selectedUser}`);
       setMessages(res.data.data || []);
     } catch (err) {
       console.error("Gagal mengirim pesan:", err);
@@ -78,16 +88,16 @@ export default function ChatPsikiater() {
         <h2 className="p-4 font-bold text-lg border-b">Daftar User</h2>
         <div className="overflow-y-auto h-full">
           {userList.length ? (
-            userList.map((u) => (
+            userList.map((user) => (
               <div
-                key={u.id}
-                onClick={() => setSelectedUser(u.id)}
+                key={user.id}
+                onClick={() => setSelectedUser(user.id)}
                 className={`p-4 cursor-pointer border-b hover:bg-gray-50 ${
-                  selectedUser === u.id ? "bg-gray-200" : ""
+                  selectedUser === user.id ? "bg-gray-200" : ""
                 }`}
               >
-                <p className="font-semibold">{u.name}</p>
-                <p className="text-xs text-gray-500">{u.email}</p>
+                <p className="font-semibold">{user.name}</p>
+                <p className="text-xs text-gray-500">{user.email}</p>
               </div>
             ))
           ) : (
