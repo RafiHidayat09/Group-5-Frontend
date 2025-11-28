@@ -2,55 +2,30 @@ import { Link } from "react-router-dom";
 
 export default function Footer() {
   return (
-    <>
-      <footer className="border-t-2 p-4 bg-white md:p-8 lg:p-10 dark:bg-gray-800">
-        <div className="mx-auto max-w-screen-xl text-center">
-          <ul className="flex flex-wrap justify-center items-center mb-6 text-gray-900 dark:text-white">
-            <li>
-              <Link to={"#"} className="mr-4 hover:underline md:mr-6">
-                About
-              </Link>
-            </li>
-            <li>
-              <Link to={"#"} className="mr-4 hover:underline md:mr-6">
-                Premium
-              </Link>
-            </li>
-            <li>
-              <Link to={"#"} className="mr-4 hover:underline md:mr-6">
-                Campaigns
-              </Link>
-            </li>
-            <li>
-              <Link to={"#"} className="mr-4 hover:underline md:mr-6">
-                Blog
-              </Link>
-            </li>
-            <li>
-              <Link to={"#"} className="mr-4 hover:underline md:mr-6">
-                Affiliate Program
-              </Link>
-            </li>
-            <li>
-              <Link to={"#"} className="mr-4 hover:underline md:mr-6">
-                FAQs
-              </Link>
-            </li>
-            <li>
-              <Link to={"#"} className="mr-4 hover:underline md:mr-6">
-                Contact
-              </Link>
-            </li>
-          </ul>
-          <span className="text-sm text-gray-500 sm:text-center dark:text-gray-400">
-            ©{" "}
-            <Link to={"#"} className="hover:underline">
-              2025
-            </Link>
-            . All Rights Reserved.
-          </span>
+    <footer className="bg-[#1e4d4d] dark:bg-[#0f2828] border-t border-white/10">
+      <div className="mx-auto max-w-screen-xl px-4 py-8 lg:py-10 text-center">
+
+        {/* Footer Menu */}
+        <ul className="flex flex-wrap justify-center items-center gap-6 text-gray-200">
+          <li>
+            <Link to="/" className="hover:text-[#7eb8b0] transition">Home</Link>
+          </li>
+          <li>
+            <Link to="/about" className="hover:text-[#7eb8b0] transition">About</Link>
+          </li>
+          <li>
+            <Link to="/layanan" className="hover:text-[#7eb8b0] transition">Layanan</Link>
+          </li>
+          <li>
+            <Link to="/artikel" className="hover:text-[#7eb8b0] transition">Artikel</Link>
+          </li>
+        </ul>
+
+        {/* Copyright */}
+        <div className="mt-6 text-gray-300 text-sm">
+          © 2025 OverthinkIT. All rights reserved.
         </div>
-      </footer>
-    </>
+      </div>
+    </footer>
   );
 }

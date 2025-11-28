@@ -49,6 +49,16 @@ export default function PsikiaterLayout() {
               Buat Artikel
             </Link>
 
+            <Link
+              to="/psikiater/chat"
+              className={`hover:underline ${
+                location.pathname.includes("chat") ? "font-bold text-yellow-300" : ""
+              }`}
+            >
+              Chat
+            </Link>
+
+
           </nav>
         </div>
 

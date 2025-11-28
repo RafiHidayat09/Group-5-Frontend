@@ -24,6 +24,8 @@ import EditPsikiater from "./pages/admin/psikiater/edit";
 import LayananPsikiater from "./pages/public/layanan";
 import ShowPsikiater from "./pages/public/layanan/show";
 import UserIndex from "./pages/admin/user";
+import About from "./pages/public/about/about";
+import ChatPsikiater from "./pages/psikiater/chat/Chat";
 
 function App() {
   return (
@@ -33,14 +35,12 @@ function App() {
             Public Layout Routes
         ======================== */}
         <Route element={<PublicLayout />}>
-          <Route index element={<Home />} /> {/* path="/" */}
-
-              {/* Publik artikel */}
+          <Route index element={<Home />} /> 
           <Route path="artikel" element={<Articles />} />
           <Route path="articles/show/:id" element={<ShowArticle />} />
             <Route path="layanan" element={<LayananPsikiater />} />
           <Route path="layanan/show/:id" element={<ShowPsikiater />} />
-          
+          <Route path ="about" element={<About />} />
 
           {/* 🔒 hanya user login */}
           <Route
@@ -89,6 +89,7 @@ function App() {
           <Route path="artikel" element={<PsikiaterArticles />} />
           <Route path="articles/create" element={<CreateArticles />} />
           <Route path="articles/edit/:id" element={<EditArticles />} />
+          <Route path="chat" element={<ChatPsikiater />} />
           
         </Route>
 
