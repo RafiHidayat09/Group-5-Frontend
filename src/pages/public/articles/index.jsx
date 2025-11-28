@@ -26,7 +26,7 @@ export default function Articles() {
 
         {/* Title */}
         <h1 className="text-3xl font-bold text-[#163737] mb-6 text-center">
-          Artikel Psikologi
+          Artikel Kesehatan Mental
         </h1>
 
         {/* Search Centered */}

@@ -28,7 +28,7 @@ export async function getMentalHealthTips(scores) {
   const data = await response.json();
   const text = data.candidates?.[0]?.content?.parts?.[0]?.text;
 
-  if (!text) return { tips: ["AI tidak mengembalikan teks."] };
+  if (!text) return { tips: ["Gagal Memproses."] };
 
   let clean = text
     .replace(/```json/gi, "")

@@ -34,7 +34,7 @@ export default function ShowArticle() {
 
     const d = document;
     const s = d.createElement("script");
-    s.src = "https://booksales-com.disqus.com/embed.js";
+    s.src = "https://mentalhealth-4.disqus.com/embed.js";
     s.id = "dsq-embed-scr";
     s.setAttribute("data-timestamp", +new Date());
     (d.head || d.body).appendChild(s);

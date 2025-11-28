@@ -48,7 +48,7 @@ export default function PsikiaterArticles() {
     <section className="bg-gray-100 py-12 min-h-screen">
       <div className="max-w-screen-xl mx-auto px-6">
         <div className="flex justify-between items-center mb-8">
-          <h1 className="text-3xl font-bold text-[#163737]">Manajemen Artikel Psikologi</h1>
+          <h1 className="text-3xl font-bold text-[#163737]">Manajemen Artikel Psikiater</h1>
 
           <Link
             to="/psikiater/articles/create"
