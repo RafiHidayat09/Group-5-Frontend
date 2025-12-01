@@ -3,11 +3,11 @@ import { API } from "../_api";
 
 export const getPsikologProfile = async () => {
   const token = localStorage.getItem("accessToken");
-  const res = await API.get("/psikolog-profile", {
+  const res = await API.get("/psychologist/psikolog-profile", {
     headers: {
       Authorization: `Bearer ${token}`,
       Accept: "application/json",
     },
   });
-  return res.data;
+  return res.data.data;
 };

@@ -17,12 +17,16 @@ export default function CreateArticles() {
   const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => {
-    API.get("/psikolog-profile")
+    API.get("/psychologist/psikolog-profile")
       .then((res) => {
-        const id = res.data?.user?.id || res.data?.data?.id;
+        console.log("HASIL API:", res);
+
+        const id = res.data?.data?.user?.id;
         setPenulisId(id);
       })
-      .catch((err) => console.warn("Gagal ambil profil:", err));
+      .catch((err) => {
+      console.warn("ERROR API:", err);
+    });
   }, []);
 
   const handleChange = (e) => {
@@ -48,7 +52,11 @@ export default function CreateArticles() {
     fd.append("konten", formData.konten);
     fd.append("kategori", formData.kategori ?? "");
     fd.append("penulis_id", penulisId);
-    if (formData.gambar) fd.append("gambar", formData.gambar);
+    if (formData.gambar) fd.append("gambar", formData.gambar, formData.gambar.name);
+    // Debug: cek isi FormData sebelum submit
+  for (let pair of fd.entries()) {
+    console.log(pair[0], pair[1]);
+  }
 
     setSubmitting(true);
     try {
