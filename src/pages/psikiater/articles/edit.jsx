@@ -22,9 +22,9 @@ export default function EditArticles() {
     // load detail article + profil penulis
     const load = async () => {
       try {
-        const [articleRes, profileRes] = await Promise.all([
+        const [articleRes] = await Promise.all([
           API.get(`/articles/${id}`),
-          API.get("/psikolog-profile").catch(() => null),
+          API.get("/psychologist/psikolog-profile").catch(() => null),
         ]);
 
         const art = articleRes.data.data;
@@ -35,11 +35,9 @@ export default function EditArticles() {
         });
         setCurrentGambar(art.gambar || null);
 
-        if (profileRes?.data?.user) {
-          setPenulisId(profileRes.data.user.id);
-        } else if (profileRes?.data?.data?.id) {
-          setPenulisId(profileRes.data.data.id);
-        }
+        //Ambil penulis_id dari artikel yang sudah ada
+        setPenulisId(art.penulis_id);
+
       } catch (err) {
         console.error("Gagal memuat data:", err);
         alert("Gagal memuat data artikel. Cek console untuk detail.");

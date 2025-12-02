@@ -8,7 +8,7 @@ export default function UserIndex() {
 
   const loadData = async () => {
     try {
-      const res = await API.get("/users");
+      const res = await API.get("admin/users");
       setData(res.data.data || []);
     } catch (err) {
       console.error("Gagal load users:", err);
@@ -22,7 +22,7 @@ export default function UserIndex() {
     if (!confirm("Yakin ingin menghapus user ini?")) return;
 
     try {
-      await API.delete(`/users/${id}`);
+      await API.delete(`admin/users/${id}`);
       loadData();
     } catch (err) {
       console.error("Gagal hapus user:", err);

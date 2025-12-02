@@ -19,10 +19,10 @@ export default function CreateArticles() {
   useEffect(() => {
     API.get("/psychologist/psikolog-profile")
       .then((res) => {
-        console.log("HASIL API:", res);
+        //console.log("HASIL API:", res);
 
         const id = res.data?.data?.user?.id;
-        setPenulisId(id);
+       if (id) setPenulisId(id);
       })
       .catch((err) => {
       console.warn("ERROR API:", err);
@@ -52,7 +52,7 @@ export default function CreateArticles() {
     fd.append("konten", formData.konten);
     fd.append("kategori", formData.kategori ?? "");
     fd.append("penulis_id", penulisId);
-    if (formData.gambar) fd.append("gambar", formData.gambar, formData.gambar.name);
+    if (formData.gambar) fd.append("gambar", formData.gambar);
     // Debug: cek isi FormData sebelum submit
   for (let pair of fd.entries()) {
     console.log(pair[0], pair[1]);
