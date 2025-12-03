@@ -24,7 +24,7 @@ API.interceptors.request.use(
   }
 );
 
-export const psikologImageStorage = `${url}/storage/psikolog`;
+export const psikologImageStorage = `${url}/storage`;
 export const articleImageStorage = `${url}/storage/articles`;
 
 export default API;
