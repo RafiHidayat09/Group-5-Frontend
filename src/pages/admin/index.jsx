@@ -47,7 +47,7 @@ export default function AdminDashboard() {
   useEffect(() => {
     const fetchStats = async () => {
       try {
-        const res = await API.get("/users/stats");
+        const res = await API.get("/admin/users/stat");
         setRoleData(res.data.roles);
         setMonthlyData(res.data.monthly);
       } catch (err) {
