@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import MessageCard from './MessageCard';
 
-const MessageList = ({ messages, typing, currentUser }) => {
+const MessageList = ({ messages, typing, currentUser, onDeleteMessage }) => {
   const messagesEndRef = useRef(null);
 
   const scrollToBottom = () => {
@@ -35,6 +35,7 @@ const MessageList = ({ messages, typing, currentUser }) => {
                 message={message}
                 // Pastikan logic sender_id sesuai dengan ID Psikolog yang sedang login
                 isSender={message.sender_id === currentUser?.id}
+                onDelete={message.sender_id === currentUser?.id ? onDeleteMessage : null}
               />
             ))}
             

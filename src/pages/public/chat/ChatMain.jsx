@@ -73,6 +73,38 @@ const ChatMain = () => {
     }
   }, [consultationId]);
 
+  const handleDeleteMessage = useCallback(async (messageId) => {
+    try {
+      console.log('🗑️ Deleting message:', messageId);
+      
+      const response = await API.delete(`/messages/${messageId}`);
+      
+      if (response.data.success) {
+        // Update local state
+        setMessages(prev => prev.filter(msg => msg.id !== messageId));
+        
+        // Show success notification
+        // alert('Pesan berhasil dihapus');
+        
+        // Or use a toast notification
+        console.log('✅ Message deleted successfully');
+      }
+    } catch (error) {
+      console.error('❌ Failed to delete message:', error);
+      
+      const errorMessage = error.response?.data?.message || 
+                          error.response?.data?.error || 
+                          'Gagal menghapus pesan';
+      
+      alert(`Error: ${errorMessage}`);
+      
+      // Jika unauthorized, refresh messages
+      if (error.response?.status === 403) {
+        fetchMessages();
+      }
+    }
+  }, [fetchMessages]);
+
   useEffect(() => {
     const initData = async () => {
       setLoading(true);
@@ -233,6 +265,7 @@ const ChatMain = () => {
                   messages={messages}
                   typing={typing}
                   currentUser={consultation?.user}
+                  onDeleteMessage={handleDeleteMessage}
                 />
 
                 {consultation?.status === 'active' && (

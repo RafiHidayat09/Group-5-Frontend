@@ -77,6 +77,47 @@ const ChatMain = () => {
     }
   }, [consultationId]);
 
+  const handleDeleteMessage = useCallback(async (messageId) => {
+    try {
+      console.log('🗑️ Deleting message:', messageId);
+      
+      // Endpoint yang sama untuk user dan psychologist
+      const response = await API.delete(`/messages/${messageId}`);
+      
+      if (response.data.success) {
+        // Update local state - hapus message dari list
+        setMessages(prev => prev.filter(msg => msg.id !== messageId));
+        
+        console.log('✅ Message deleted successfully');
+        
+        // Optional: Tampilkan toast notification (jika ada library toast)
+        // toast.success('Pesan berhasil dihapus');
+      }
+    } catch (error) {
+      console.error('❌ Failed to delete message:', error);
+      
+      const errorMessage = error.response?.data?.message || 
+                          error.response?.data?.error || 
+                          'Gagal menghapus pesan. Silakan coba lagi.';
+      
+      // Log saja untuk debugging
+      console.error('Delete error:', errorMessage, 'Status:', error.response?.status);
+      
+      // Optional: Tampilkan error toast
+      // toast.error(errorMessage);
+      
+      // Refresh messages jika perlu
+      if (error.response?.status === 403 || error.response?.status === 404) {
+        fetchMessages();
+      }
+      
+      // Optional: Jika 401, redirect ke login
+      if (error.response?.status === 401) {
+        // window.location.href = '/login';
+      }
+    }
+  }, [fetchMessages]);
+
   useEffect(() => {
     const initData = async () => {
       setLoading(true);
@@ -236,6 +277,7 @@ const ChatMain = () => {
                   messages={messages}
                   typing={typing}
                   currentUser={consultation?.psychologist}
+                  onDeleteMessage={handleDeleteMessage}
                 />
 
                 {consultation?.status === 'active' && (

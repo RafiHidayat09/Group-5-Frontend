@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import MessageCard from './MessageCard';
 
-const MessageList = ({ messages, typing, currentUser }) => {
+const MessageList = ({ messages, typing, currentUser, onDeleteMessage }) => {
   const messagesEndRef = useRef(null);
 
   const scrollToBottom = () => {
@@ -34,6 +34,7 @@ const MessageList = ({ messages, typing, currentUser }) => {
                 key={message.id}
                 message={message}
                 isSender={message.sender_id === currentUser?.id}
+                onDelete={onDeleteMessage}
               />
             ))}
             

@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 
-const MessageCard = ({ message, isSender }) => {
+const MessageCard = ({ message, isSender, onDelete }) => {
   const [showActions, setShowActions] = useState(false);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
   const formatTime = (dateString) => {
     return new Date(dateString).toLocaleTimeString('id-ID', {
@@ -10,11 +11,29 @@ const MessageCard = ({ message, isSender }) => {
     });
   };
 
+  const handleDelete = () => {
+    if (onDelete && message.id) {
+      onDelete(message.id);
+      setShowDeleteConfirm(false);
+      setShowActions(false);
+    }
+  };
+
+  const handleDeleteClick = (e) => {
+    e.stopPropagation(); // Mencegah event bubbling
+    setShowDeleteConfirm(true);
+  };
+
+  const handleCancelDelete = (e) => {
+    e.stopPropagation();
+    setShowDeleteConfirm(false);
+  };
+
   return (
     <div 
-      className={`flex ${isSender ? 'justify-end' : 'justify-start'}`}
-      onMouseEnter={() => setShowActions(true)}
-      onMouseLeave={() => setShowActions(false)}
+      className={`flex ${isSender ? 'justify-end' : 'justify-start'} mb-4`}
+      onMouseEnter={() => !showDeleteConfirm && setShowActions(true)}
+      onMouseLeave={() => !showDeleteConfirm && setShowActions(false)}
     >
       <div className={`relative max-w-xs lg:max-w-md ${isSender ? 'order-2' : 'order-1'}`}>
         {/* Message Bubble */}
@@ -68,10 +87,47 @@ const MessageCard = ({ message, isSender }) => {
           </div>
         </div>
 
-        {/* Actions */}
-        {showActions && isSender && (
-          <div className="absolute -left-10 top-1/2 transform -translate-y-1/2">
-            <button className="w-8 h-8 bg-white shadow-lg rounded-full flex items-center justify-center text-red-500 hover:bg-red-50 transition-colors">
+        {/* Delete Confirmation Dialog */}
+        {showDeleteConfirm && (
+          <div className="absolute -left-48 top-1/2 transform -translate-y-1/2 z-10">
+            <div className="bg-white rounded-xl shadow-xl p-4 w-64">
+              <div className="flex items-start space-x-3">
+                <div className="w-10 h-10 bg-red-100 rounded-full flex items-center justify-center flex-shrink-0">
+                  <i className="fa-solid fa-exclamation text-red-600"></i>
+                </div>
+                <div className="flex-1">
+                  <h3 className="font-semibold text-gray-900">Hapus Pesan</h3>
+                  <p className="text-sm text-gray-600 mt-1">
+                    Apakah Anda yakin ingin menghapus pesan ini? Tindakan ini tidak dapat dibatalkan.
+                  </p>
+                  <div className="flex space-x-2 mt-3">
+                    <button
+                      onClick={handleCancelDelete}
+                      className="flex-1 px-4 py-2 text-sm border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+                    >
+                      Batal
+                    </button>
+                    <button
+                      onClick={handleDelete}
+                      className="flex-1 px-4 py-2 text-sm bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
+                    >
+                      Hapus
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Delete Action Button */}
+        {showActions && isSender && !showDeleteConfirm && (
+          <div className="absolute -left-10 top-1/2 transform -translate-y-1/2 z-5">
+            <button 
+              onClick={handleDeleteClick}
+              className="w-8 h-8 bg-white shadow-lg rounded-full flex items-center justify-center text-red-500 hover:bg-red-50 transition-colors hover:scale-110 active:scale-95"
+              title="Hapus pesan"
+            >
               <i className="fa-regular fa-trash-can text-sm"></i>
             </button>
           </div>
