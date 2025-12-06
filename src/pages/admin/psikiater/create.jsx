@@ -74,9 +74,7 @@ export default function CreatePsikiater() {
       
       if (foto) formData.append("avatar", foto);
 
-      await API.post("/admin/psychologists", formData, {
-        headers: { "Content-Type": "multipart/form-data" },
-      });
+      await API.post("/admin/psychologists", formData); 
 
       alert("Psikiater berhasil ditambahkan");
       navigate("/admin/psikiater");
@@ -92,9 +90,6 @@ export default function CreatePsikiater() {
     }
   };
 
-  // =============================
-  // UI COMPONENT
-  // =============================
   return (
     <section className="bg-gray-100 py-12 min-h-screen">
       <div className="max-w-4xl mx-auto px-6">
