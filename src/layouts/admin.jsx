@@ -38,6 +38,21 @@ export default function AdminLayout() {
           <nav className="flex flex-col gap-4 text-lg">
 
             
+    
+            <Link
+              to="/admin"
+              className="hover:bg-[#255e5e] py-2 px-3 rounded transition"
+            >
+              Dashboard
+            </Link>
+
+           
+          </nav>
+
+
+          <nav className="flex flex-col gap-4 text-lg">
+
+            
 
             <Link
               to="/admin/psikiater"

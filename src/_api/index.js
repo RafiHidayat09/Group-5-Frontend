@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const url = "http://127.0.0.1:8000"
+const url = "https://backend-kelompokfwd5-sibm3.karyakreasi.id"
 
 export const API  = axios.create({
   baseURL: `${url}/api`,
